@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Practica</string>
+    <string name="BotonIrAInsertarUsuarios">Insertar Nuevos Usuarios</string>
+    <string name="BotonListaUsuarios">Ir a Lista de Usuarios</string>
+    <string name="textViewNacionalidad">Nacionalidad:</string>
+    <string name="hintNacionalidad">ES, UK, DE</string>
+    <string name="textViewSexo">Sexo:</string>
+    <string name="hintSexo">female/male</string>
+    <string name="textViewNumeroUsuarios">Numero de Usuarios a Insertar:</string>
+    <string name="hintNumeroUsuarios">1</string>
+    <string name="textViewFechaRegistro">Fecha de Registro:</string>
+    <string name="hintFechaRegistro">dd-MM-YYYY</string>
+</resources>
