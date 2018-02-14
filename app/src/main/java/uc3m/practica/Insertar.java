@@ -4,6 +4,10 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +23,9 @@ public class Insertar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertar);
+        Log.d("STATE","PROBANDO APLICACION");
+        MiTareaAsincrona tarea=new MiTareaAsincrona();
+        tarea.execute();
     }
 
 
@@ -39,24 +46,37 @@ public class Insertar extends AppCompatActivity {
                     InputStream responseBody = myConnection.getInputStream();
                     InputStreamReader responseBodyReader =
                             new InputStreamReader(responseBody, "UTF-8");
+                    JSONObject datos=new JSONObject();
                     JsonReader jsonReader = new JsonReader(responseBodyReader);
                     jsonReader.beginObject(); // Start processing the JSON object
                     // BUSCAR EN EL JSON LEIDO
+
+
+
                     while (jsonReader.hasNext()) { // Loop through all keys
                         String key = jsonReader.nextName(); // Fetch the next key
                         if (key.equals("results")) { // Check if desired key
                             // Fetch the value as a String
                             String value = jsonReader.nextString();
                             //mostrar por pantalla o hacer algo con este dato a ver que sale.
+                            try{
+                                datos=new JSONObject(value);
 
-                            // Do something with the value
-                            // ...
+                            }
+                            catch (JSONException a){}
+
 
                             break; // Break out of the loop
                         } else {
                             jsonReader.skipValue(); // Skip values of other keys
                         }
                     }
+                    // Ya tengo en datos el resultado
+                    String genero="";
+                    try{
+                        genero=datos.getString("gender");}
+                    catch (JSONException a){}
+                    Log.d("PRUEBAS","TEST impresion" + genero);
                     jsonReader.close();
                     myConnection.disconnect();
                 } else {
@@ -94,6 +114,4 @@ public class Insertar extends AppCompatActivity {
 
         }
     }
-
-
 }
