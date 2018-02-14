@@ -63,13 +63,15 @@ public class Insertar extends AppCompatActivity {
                         String key = jsonReader.nextName(); // Fetch the next key
                         if (key.equals("results")) { // Check if desired key
                             // Fetch the value as a String
-                            String value =jsonReader.nextString();
-                            Gson gson=new Gson();
-                            Usuario usuario= gson.fromJson(value,Usuario.class);
 
-                            Log.d("STATE","pruebas 5" + usuario.email);
-                            jsonReader.beginArray();
-                            jsonReader.beginObject();
+                            //jsonReader.beginObject();
+                            String value =jsonReader.toString();
+                            Gson gson=new Gson();
+                            Log.d("STATE","pruebas enviado" + value.substring(16));
+                            ListaUsuarios usuarios= gson.fromJson(value.substring(16),ListaUsuarios.class);
+
+                            Log.d("STATE","pruebas 5" + usuarios.getLista().get(0).email);
+
                             String nombre=jsonReader.nextName();
                             Log.d("STATE","CONTENIDO paco " + nombre);
                             String genero=jsonReader.nextString();
