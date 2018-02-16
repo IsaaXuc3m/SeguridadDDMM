@@ -8,14 +8,17 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -38,67 +41,21 @@ public class Insertar extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Log.d("STATE","PRUEBAS BACKGROUND");
+            List<Usuario> usuarios=new ArrayList<>();
             try{
-                URL direccion = new URL("https://randomuser.me/api/");
+                URL direccion = new URL("https://randomuser.me/api/?results=3");
                 // Create connection
-                Log.d("STATE","PRUEBAS BACKGROUND2");
                 HttpsURLConnection myConnection =
                         (HttpsURLConnection) direccion.openConnection();
-                Log.d("RESPUESTA","CONTENIDO" + myConnection.getResponseCode());
                 if (myConnection.getResponseCode() == 200) {
                     // Success
-                    Log.d("STATE","PRUEBAS BACKGROUND3");
-                    InputStream responseBody = myConnection.getInputStream();
-                    InputStreamReader responseBodyReader =
-                            new InputStreamReader(responseBody, "UTF-8");
-                    JSONObject datos=new JSONObject();
-                    JsonReader jsonReader = new JsonReader(responseBodyReader);
-                    jsonReader.beginObject(); // Start processing the JSON object
-                    // BUSCAR EN EL JSON LEIDO
-
-                    Log.d("STATE","PRUEBAS BACKGROUND4");
-
-                    while (jsonReader.hasNext()) { // Loop through all keys
-                        String key = jsonReader.nextName(); // Fetch the next key
-                        if (key.equals("results")) { // Check if desired key
-                            // Fetch the value as a String
-
-                            //jsonReader.beginObject();
-                            String value =jsonReader.toString();
-                            Gson gson=new Gson();
-                            Log.d("STATE","pruebas enviado" + value.substring(16));
-                            ListaUsuarios usuarios= gson.fromJson(value.substring(16),ListaUsuarios.class);
-
-                            Log.d("STATE","pruebas 5" + usuarios.getLista().get(0).email);
-
-                            String nombre=jsonReader.nextName();
-                            Log.d("STATE","CONTENIDO paco " + nombre);
-                            String genero=jsonReader.nextString();
-                            Log.d("STATE","genero :  " + genero);
-                            Log.d("STATE","pruebas 6");
-
-                            //mostrar por pantalla o hacer algo con este dato a ver que sale.
-                            try{
-                                datos=new JSONObject(value);
-
-                            }
-                            catch (JSONException a){}
-
-
-                            break; // Break out of the loop
-                        } else {
-                            jsonReader.skipValue(); // Skip values of other keys
-                        }
-                    }
-                    // Ya tengo en datos el resultado
-                    String genero="";
-                    try{
-                        genero=datos.getString("gender");}
-                    catch (JSONException a){}
-                    Log.d("PRUEBAS","TEST impresion" + genero);
-                    jsonReader.close();
+                    String contenido1=readStream(myConnection.getInputStream());
+                    usuarios=parseUsuarios(contenido1);
                     myConnection.disconnect();
+
+                    Log.d("STATE","usuario " + usuarios.get(0).getName().first);
+
+
                 } else {
                     // Error handling code goes here
                 }
@@ -113,8 +70,73 @@ public class Insertar extends AppCompatActivity {
             return true;
         }
 
+        private String readStream(InputStream in) {
+            BufferedReader reader = null;
+            StringBuffer response = new StringBuffer();
+            try {
+                reader = new BufferedReader(new InputStreamReader(in));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return response.toString();
+        }
+        private List<Usuario> parseUsuarios (String jString){
+            List<Usuario> listaUsuarios=new ArrayList<Usuario>();
+            try{
+                JSONObject jObj=new JSONObject(jString);
+                JSONArray arr=jObj.getJSONArray("results");
+                if (arr!=null){
+                    for (int i=0;i<arr.length();i++){
+                        String gender=arr.getJSONObject(i).getString("gender");
+                        String email=arr.getJSONObject(i).getString("email");
+                        String phone=arr.getJSONObject(i).getString("phone");
+                        String nat=arr.getJSONObject(i).getString("nat");
+                        Nombre name=new Nombre(
+                                arr.getJSONObject(i).getJSONObject("name").getString("title"),
+                                arr.getJSONObject(i).getJSONObject("name").getString("first"),
+                                arr.getJSONObject(i).getJSONObject("name").getString("last"));
+                        Localizacion location=new Localizacion(
+                                arr.getJSONObject(i).getJSONObject("location").getString("street"),
+                                arr.getJSONObject(i).getJSONObject("location").getString("city"),
+                                arr.getJSONObject(i).getJSONObject("location").getString("state"),
+                                arr.getJSONObject(i).getJSONObject("location").getString("postcode"));
+                        LoginDatos login=new LoginDatos(
+                                arr.getJSONObject(i).getJSONObject("login").getString("username"),
+                                arr.getJSONObject(i).getJSONObject("login").getString("password"),
+                                arr.getJSONObject(i).getJSONObject("login").getString("salt"),
+                                arr.getJSONObject(i).getJSONObject("login").getString("md5"),
+                                arr.getJSONObject(i).getJSONObject("login").getString("sha1"),
+                                arr.getJSONObject(i).getJSONObject("login").getString("sha256")
+                        );
+                        //LoginDatos(String username, String password, String salt, String md5, String sha1, String sha256)
+                        Usuario usuario= new Usuario(gender, email, phone, nat, name, location,login);
+                        //Log.d("STATE","datos usuario email objeto" + usuario.email);
+                        listaUsuarios.add(usuario);
+                    }
+                }
 
-        @Override
+
+        } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        return listaUsuarios;
+        }
+
+
+            @Override
         protected void onProgressUpdate(Integer... values) {
 
         }
