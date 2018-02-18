@@ -11,4 +11,9 @@
     <string name="textViewFechaRegistro">Fecha de Registro:</string>
     <string name="hintFechaRegistro">dd/MM/YYYY</string>
     <string name="botonInsertar">Insertar</string>
+    <string name="textViewNombre">Nombre</string>
+    <string name="textViewFecha">Fecha</string>
+    <string name="textViewGenero">Género</string>
+    <string name="textViewImagen">Imagen</string>
+    <string name="textViewLocalizacion">Localización</string>
 </resources>
