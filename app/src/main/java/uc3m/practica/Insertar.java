@@ -48,7 +48,6 @@ public class Insertar extends AppCompatActivity
 
     public void botonInsertar(View view) {
         Log.d("Insertar","Insertando");
-        Log.d("Insertar","Insertando333333332222222222");
         String nacionalidad = textoNacionalidad.getText().toString();
         Log.d(TAG, "la nacionalidad es:" +nacionalidad);
         if(nacionalidad.equals(""))nacionalidad = null;
@@ -79,11 +78,13 @@ public class Insertar extends AppCompatActivity
     {
         if(baseDatos.insert(usuario))
         {
-            Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();
+            Log.d("Insertar", "bien");
         }
         else
         {
-            Toast.makeText(this, "Fallo al hacer el insert", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Fallo al hacer el insert", Toast.LENGTH_SHORT).show();
+            Log.d("Insertar", "mal");
         }
     }
 
@@ -158,7 +159,9 @@ public class Insertar extends AppCompatActivity
                                 + " " +usuarios.get(i).getName().last + " Sexo: " + usuarios.get(i).getGender() + " Fecha: " +usuarios.get(i).getRegister()
                                 + " Nacionalidad: " +usuarios.get(i).getNat() + " Imagen " +usuarios.get(i).getPhone()
                                 + " Localizacion " +usuarios.get(i).getLocation().street  + " " +usuarios.get(i).getLocation().city);
+                        Log.d("Insertar", "antes de insertar");
                         insertar(usuarios.get(i));
+                        Log.d("Insertar", "despues de insertar");
                     }
 
                 }

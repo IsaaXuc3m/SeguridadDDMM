@@ -32,8 +32,8 @@ public class DataBase extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String createTable = "CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL1 + " TEXT, " + COL2 + "TEXT, " +
-                COL3 + " TEXT, " + COL4 + "TEXT, " + COL5 + " TEXT, " + COL6 + "TEXT, " + COL7 + " TEXT, " + COL8 + "TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL1 + " TEXT, " + COL2 + " TEXT, " +
+                COL3 + " TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " TEXT, " + COL7 + " TEXT, " + COL8 + " TEXT)";
         db.execSQL(createTable);
         Log.d(TAG, "creada");
     }
@@ -46,12 +46,17 @@ public class DataBase extends SQLiteOpenHelper
 
     public boolean insert(Usuario item)
     {
+        Log.d(TAG,"1");
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(TAG,"2");
         ContentValues contentValues = new ContentValues();
-        //contentValues.put(COL1, item);
+        Log.d(TAG,"3");
         String nombre = item.getName().getTitle() + " " + item.getName().getFirst()  + " " + item.getName().getLast();
+        Log.d(TAG,"4");
         contentValues.put(COL1, nombre);
+        Log.d(TAG,"5");
         contentValues.put(COL2, item.getGender());
+        Log.d(TAG,"6");
         contentValues.put(COL3, item.getRegister());
         contentValues.put(COL4, item.getNat());
         String localizacion = item.getLocation().getStreet() + " " +item.getLocation().getCity();
@@ -59,8 +64,10 @@ public class DataBase extends SQLiteOpenHelper
         contentValues.put(COL6, item.getPhone());
         contentValues.put(COL7, item.getLogin().getUsername());
         contentValues.put(COL8, item.getLogin().getPassword());
+        Log.d(TAG,"7");
 
         long result = db.insert(TABLE_NAME, null, contentValues);
+        Log.d(TAG,"8");
 
         //if date as inserted incorrectly
         if(result == -1)

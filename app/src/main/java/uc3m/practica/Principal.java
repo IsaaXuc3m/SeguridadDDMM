@@ -17,4 +17,9 @@ public class Principal extends AppCompatActivity {
         Intent intent = new Intent(this, Insertar.class);
         startActivity(intent);
     }
+
+    public void irAListar(View view) {
+        Intent intent = new Intent(this, ListarVertical.class);
+        startActivity(intent);
+    }
 }
