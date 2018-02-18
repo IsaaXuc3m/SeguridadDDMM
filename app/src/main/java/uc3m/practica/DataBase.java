@@ -44,14 +44,21 @@ public class DataBase extends SQLiteOpenHelper
         db.execSQL(prueba + TABLE_NAME);
     }
 
-    public boolean addData(String item)
+    public boolean insert(Usuario item)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL1, item);
-
-        Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
-
+        //contentValues.put(COL1, item);
+        String nombre = item.getName().getTitle() + " " + item.getName().getFirst()  + " " + item.getName().getLast();
+        contentValues.put(COL1, nombre);
+        contentValues.put(COL2, item.getGender());
+        contentValues.put(COL3, item.getRegister());
+        contentValues.put(COL4, item.getNat());
+        String localizacion = item.getLocation().getStreet() + " " +item.getLocation().getCity();
+        contentValues.put(COL5, localizacion);
+        contentValues.put(COL6, item.getPhone());
+        contentValues.put(COL7, item.getLogin().getUsername());
+        contentValues.put(COL8, item.getLogin().getPassword());
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 

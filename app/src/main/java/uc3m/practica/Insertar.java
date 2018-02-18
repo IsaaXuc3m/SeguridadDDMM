@@ -8,6 +8,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -31,7 +32,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Insertar extends AppCompatActivity
 {
+    private final String TAG = "Insertar";
     private EditText textoNacionalidad, textoSexo, textoNumero, textoFecha;
+    DataBase baseDatos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,33 +43,48 @@ public class Insertar extends AppCompatActivity
         textoSexo = (EditText) findViewById(R.id.editTextSexo);
         textoNumero = (EditText) findViewById(R.id.editTextNumero);
         textoFecha = (EditText) findViewById(R.id.editTextFechaRegistro);
+        baseDatos = new DataBase(this);
     }
 
     public void botonInsertar(View view) {
         Log.d("Insertar","Insertando");
-
+        Log.d("Insertar","Insertando333333332222222222");
         String nacionalidad = textoNacionalidad.getText().toString();
-        if(nacionalidad == "") nacionalidad = null;
+        Log.d(TAG, "la nacionalidad es:" +nacionalidad);
+        if(nacionalidad.equals(""))nacionalidad = null;
+        Log.d(TAG, "la nacionalidad es:" +nacionalidad);
         String sexo = textoSexo.getText().toString();
-        if(sexo == "") sexo = null;
+        if(sexo.equals("")) sexo = null;
         String numeroS = textoNumero.getText().toString();
         int numero;
-        if(numeroS == "") numero = 1;
+        if(numeroS.equals("")) numero = 1;
         else
         {
             numero = Integer.parseInt(numeroS);
         }
         String fecha = textoFecha.getText().toString();
-        if(fecha == "") fecha = null;
+        if(fecha.equals("")) fecha = null;
 
         ParametrosUsuarios parametros=new ParametrosUsuarios(
                 nacionalidad,
                 sexo,
                 numero,
-                fecha);//"20/01/2012"
+                null);//"20/01/2012"
 
         MiTareaAsincrona tarea=new MiTareaAsincrona();
         tarea.execute(parametros);
+    }
+
+    public void insertar(Usuario usuario)
+    {
+        if(baseDatos.insert(usuario))
+        {
+            Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Fallo al hacer el insert", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Sexo puede ser "male" o "female"
@@ -137,7 +155,10 @@ public class Insertar extends AppCompatActivity
                     for (int i=0;i<usuarios.size();i++)
                     {
                         Log.d("STATE", "Usuario " + i + ": " + usuarios.get(i).getName().title + " " +usuarios.get(i).getName().first
-                                + " " +usuarios.get(i).getName().last);
+                                + " " +usuarios.get(i).getName().last + " Sexo: " + usuarios.get(i).getGender() + " Fecha: " +usuarios.get(i).getRegister()
+                                + " Nacionalidad: " +usuarios.get(i).getNat() + " Imagen " +usuarios.get(i).getPhone()
+                                + " Localizacion " +usuarios.get(i).getLocation().street  + " " +usuarios.get(i).getLocation().city);
+                        insertar(usuarios.get(i));
                     }
 
                 }
