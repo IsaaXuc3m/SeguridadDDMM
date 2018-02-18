@@ -5,11 +5,11 @@ package uc3m.practica;
  */
 
 public class Usuario {
-    public String gender,email,phone,nat,register;
+    public String gender,email,phone,nat,register,image;
     public Nombre name;
     public Localizacion location;
     public LoginDatos login;
-    public Usuario(String gender, String email, String phone, String nat,String register, Nombre name, Localizacion location, LoginDatos login) {
+    public Usuario(String gender, String email, String phone, String nat, String register, Nombre name, Localizacion location, LoginDatos login,String image) {
         this.gender = gender;
         this.email = email;
         this.phone = phone;
@@ -18,6 +18,7 @@ public class Usuario {
         this.location = location;
         this.login = login;
         this.register=register;
+        this.image=image;
     }
 
     public String getRegister() {

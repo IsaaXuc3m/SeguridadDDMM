@@ -230,6 +230,7 @@ public class Insertar extends AppCompatActivity
                         String register=arr.getJSONObject(i).getString("registered");
                         register=register.substring(0,9);
                         String nat=arr.getJSONObject(i).getString("nat");
+                        String im=arr.getJSONObject(i).getJSONObject("picture").getString("large");
                         Nombre name=new Nombre(
                                 arr.getJSONObject(i).getJSONObject("name").getString("title"),
                                 arr.getJSONObject(i).getJSONObject("name").getString("first"),
@@ -248,7 +249,7 @@ public class Insertar extends AppCompatActivity
                                 arr.getJSONObject(i).getJSONObject("login").getString("sha256")
                         );
                         //LoginDatos(String username, String password, String salt, String md5, String sha1, String sha256)
-                        Usuario usuario= new Usuario(gender, email, phone, nat,register, name, location,login);
+                        Usuario usuario= new Usuario(gender, email, phone, nat,register, name, location,login,im);
                         //Log.d("STATE","datos usuario email objeto" + usuario.email);
                         listaUsuarios.add(usuario);
                     }
