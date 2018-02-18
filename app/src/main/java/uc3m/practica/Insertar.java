@@ -1,10 +1,13 @@
 package uc3m.practica;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 
@@ -26,42 +29,63 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Insertar extends AppCompatActivity {
-
+public class Insertar extends AppCompatActivity
+{
+    private EditText textoNacionalidad, textoSexo, textoNumero, textoFecha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertar);
-        Log.d("STATE","PROBANDO APLICACION");
-        MiTareaAsincrona tarea=new MiTareaAsincrona();
-        ParametrosUsuarios parametros=new ParametrosUsuarios(
-                null,
-                null,
-                50,
-                "20/01/2012");
-
-
-        tarea.execute(parametros);
-
-
+        textoNacionalidad = (EditText) findViewById(R.id.editTextNacionalidad);
+        textoSexo = (EditText) findViewById(R.id.editTextSexo);
+        textoNumero = (EditText) findViewById(R.id.editTextNumero);
+        textoFecha = (EditText) findViewById(R.id.editTextFechaRegistro);
     }
-/**
- * Sexo puede ser "male" o "female".
- * Los valores que no se tengan que sean nulos en vez de ""
- *
- * */
 
-    //https://code.tutsplus.com/es/tutorials/android-from-scratch-using-rest-apis--cms-27117
+    public void botonInsertar(View view) {
+        Log.d("Insertar","Insertando");
+
+        String nacionalidad = textoNacionalidad.getText().toString();
+        if(nacionalidad == "") nacionalidad = null;
+        String sexo = textoSexo.getText().toString();
+        if(sexo == "") sexo = null;
+        String numeroS = textoNumero.getText().toString();
+        int numero;
+        if(numeroS == "") numero = 1;
+        else
+        {
+            numero = Integer.parseInt(numeroS);
+        }
+        String fecha = textoFecha.getText().toString();
+        if(fecha == "") fecha = null;
+
+        ParametrosUsuarios parametros=new ParametrosUsuarios(
+                nacionalidad,
+                sexo,
+                numero,
+                fecha);//"20/01/2012"
+
+        MiTareaAsincrona tarea=new MiTareaAsincrona();
+        tarea.execute(parametros);
+    }
+
+    // Sexo puede ser "male" o "female"
+    // Los valores que no se tengan ser'an nulos en vez de ""
+    // https://code.tutsplus.com/es/tutorials/android-from-scratch-using-rest-apis--cms-27117
     // api https://randomuser.me/documentation#howto
-    class MiTareaAsincrona extends AsyncTask<ParametrosUsuarios, Integer, Boolean> {
-//https://gist.github.com/hnaoto/f492c9ceae264897dd6f
+    class MiTareaAsincrona extends AsyncTask<ParametrosUsuarios, Integer, Boolean>
+    {
+        //https://gist.github.com/hnaoto/f492c9ceae264897dd6f
         @Override
-        protected Boolean doInBackground(ParametrosUsuarios... args) {
+        protected Boolean doInBackground(ParametrosUsuarios... args)
+        {
             List<Usuario> usuarios=new ArrayList<>();
-            try{
+            try
+            {
                 String direccionweb="https://randomuser.me/api/?";
                 int cont=0;
-                if (args[0].getSexo()!=null) {
+                if (args[0].getSexo()!=null)
+                {
                     //meter el string concatenado
                     //https://msdn.microsoft.com/es-es/library/system.text.stringbuilder.append(v=vs.110).aspx
                     String temp="";
@@ -86,73 +110,99 @@ public class Insertar extends AppCompatActivity {
                     temp=temp.concat( ("results=" + (args[0].getNumUsuarios())));
                     direccionweb=direccionweb.concat(temp);
                 }
-                Log.d("STATE","cadena" + direccionweb );
+                Log.d("STATE","URL: " + direccionweb );
                 URL direccion = new URL(direccionweb);
                 // Create connection
                 HttpsURLConnection myConnection =
                         (HttpsURLConnection) direccion.openConnection();
-                if (myConnection.getResponseCode() == 200) {
+                if (myConnection.getResponseCode() == 200)
+                {
                     // Success
                     List<Usuario> usuariosSinFiltrar=new ArrayList<>();
                     String contenido1=readStream(myConnection.getInputStream());
                     usuariosSinFiltrar=parseUsuarios(contenido1);
                     myConnection.disconnect();
-                    Log.d("STATE", "usuarios  antes" + usuariosSinFiltrar.size());
-                    if (args[0].getFecha()!=null){
+                    Log.d("STATE", "Numero usuarios " + usuariosSinFiltrar.size());
+                    if (args[0].getFecha()!=null)
+                    {
                         //llamar a la funcion de parseo
                         usuarios=parseUsuarios(usuariosSinFiltrar,args[0].getFecha());
 
-                    }else{
+                    }
+                    else
+                    {
                         usuarios=usuariosSinFiltrar;
                     }
-                    Log.d("STATE", "usuarios numero" + usuarios.size());
-                    for (int i=0;i<usuarios.size();i++) {
-                        Log.d("STATE", "usuario fecha reg" + usuarios.get(i).getRegister());
+                    Log.d("STATE", "Numero usuarios filtrados " + usuarios.size());
+                    for (int i=0;i<usuarios.size();i++)
+                    {
+                        Log.d("STATE", "Usuario " + i + ": " + usuarios.get(i).getName().title + " " +usuarios.get(i).getName().first
+                                + " " +usuarios.get(i).getName().last);
                     }
 
-                } else {
+                }
+                else
+                {
                     // Error handling code goes here
+                    Log.d("Insertar", "fallo de conexion");
                 }
             }
-            catch (MalformedURLException exc){
-
-            }catch (IOException ec2){
+            catch (MalformedURLException exc)
+            {
 
             }
+            catch (IOException ec2)
+            {
 
-
+            }
+            Log.d("STATE", "fin");
             return true;
         }
 
-        private String readStream(InputStream in) {
+        private String readStream(InputStream in)
+        {
             BufferedReader reader = null;
             StringBuffer response = new StringBuffer();
-            try {
+            try
+            {
                 reader = new BufferedReader(new InputStreamReader(in));
                 String line = "";
-                while ((line = reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null)
+                {
                     response.append(line);
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
-            } finally {
-                if (reader != null) {
-                    try {
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    try
+                    {
                         reader.close();
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e)
+                    {
                         e.printStackTrace();
                     }
                 }
             }
             return response.toString();
         }
-        private List<Usuario> parseUsuarios (String jString){
+        private List<Usuario> parseUsuarios (String jString)
+        {
             List<Usuario> listaUsuarios=new ArrayList<Usuario>();
-            try{
+            try
+            {
                 JSONObject jObj=new JSONObject(jString);
                 JSONArray arr=jObj.getJSONArray("results");
-                if (arr!=null){
-                    for (int i=0;i<arr.length();i++){
+                if (arr!=null)
+                {
+                    for (int i=0;i<arr.length();i++)
+                    {
                         String gender=arr.getJSONObject(i).getString("gender");
                         String email=arr.getJSONObject(i).getString("email");
                         String phone=arr.getJSONObject(i).getString("phone");
@@ -182,35 +232,39 @@ public class Insertar extends AppCompatActivity {
                         listaUsuarios.add(usuario);
                     }
                 }
-
-
-        } catch (JSONException e) {
+            }
+            catch (JSONException e)
+            {
                 e.printStackTrace();
             }
-
-        return listaUsuarios;
+            return listaUsuarios;
         }
-    private List<Usuario> parseUsuarios (List<Usuario> listaSinFiltrar,String fecha){
-        List<Usuario> usuarios=new ArrayList<>();
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
-            Date strDate=sdf.parse(fecha); //esta es la fecha a partir de la cual se pillan usuarios.
-            // Ahora se recorren todos los usuarios y si coinciden se meten en la lista.
-            for (int i=0;i<listaSinFiltrar.size();i++){
-                Date strDateCompare=sdf2.parse(listaSinFiltrar.get(i).getRegister());
-                if (strDate.before(strDateCompare)){
-                    usuarios.add(listaSinFiltrar.get(i));
+        private List<Usuario> parseUsuarios (List<Usuario> listaSinFiltrar,String fecha)
+        {
+            List<Usuario> usuarios=new ArrayList<>();
+            SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+            try
+            {
+                SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
+                Date strDate=sdf.parse(fecha); //esta es la fecha a partir de la cual se pillan usuarios.
+                // Ahora se recorren todos los usuarios y si coinciden se meten en la lista.
+                for (int i=0;i<listaSinFiltrar.size();i++)
+                {
+                    Date strDateCompare=sdf2.parse(listaSinFiltrar.get(i).getRegister());
+                    if (strDate.before(strDateCompare))
+                    {
+                        usuarios.add(listaSinFiltrar.get(i));
+                    }
                 }
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
+            catch (ParseException e)
+            {
+                e.printStackTrace();
+            }
+            return usuarios;
         }
-        return usuarios;
-    }
 
-
-            @Override
+        @Override
         protected void onProgressUpdate(Integer... values) {
 
         }

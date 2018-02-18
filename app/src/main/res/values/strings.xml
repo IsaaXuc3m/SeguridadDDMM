@@ -9,5 +9,6 @@
     <string name="textViewNumeroUsuarios">Numero de Usuarios a Insertar:</string>
     <string name="hintNumeroUsuarios">1</string>
     <string name="textViewFechaRegistro">Fecha de Registro:</string>
-    <string name="hintFechaRegistro">dd-MM-YYYY</string>
+    <string name="hintFechaRegistro">dd/MM/YYYY</string>
+    <string name="botonInsertar">Insertar</string>
 </resources>
