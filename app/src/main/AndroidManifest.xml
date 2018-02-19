@@ -19,9 +19,9 @@
         <activity android:name=".Principal" />
         <activity android:name=".Insertar" />
         <activity android:name=".ListarVertical"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".ListarHorizontal"
-            android:configChanges="orientation"></activity>
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>

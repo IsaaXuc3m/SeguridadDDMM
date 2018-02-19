@@ -34,11 +34,6 @@ public class ListarHorizontal extends AppCompatActivity
 
 
 
-
-
-
-
-
     private void rellenarTabla()
     {
         Log.d(TAG, "Vamos a hacer el select *");
