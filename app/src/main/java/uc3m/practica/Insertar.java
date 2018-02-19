@@ -276,7 +276,9 @@ public class Insertar extends AppCompatActivity
                 for (int i=0;i<listaSinFiltrar.size();i++)
                 {
                     Date strDateCompare=sdf2.parse(listaSinFiltrar.get(i).getRegister());
-                    if (strDate.before(strDateCompare))
+                    // before quiere decir que la fecha que introducimos esta antes de todas las que entren, es decir, entran los de despues.
+                    //after hace que la fecha este siempre despues osea que entran los de antes.
+                    if (strDate.after(strDateCompare))
                     {
                         usuarios.add(listaSinFiltrar.get(i));
                     }
