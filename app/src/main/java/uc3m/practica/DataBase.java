@@ -61,7 +61,7 @@ public class DataBase extends SQLiteOpenHelper
         contentValues.put(COL4, item.getNat());
         String localizacion = item.getLocation().getStreet() + " " +item.getLocation().getCity();
         contentValues.put(COL5, localizacion);
-        contentValues.put(COL6, item.getPhone());
+        contentValues.put(COL6, item.getImage());
         contentValues.put(COL7, item.getLogin().getUsername());
         contentValues.put(COL8, item.getLogin().getPassword());
         Log.d(TAG,"7");

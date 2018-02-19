@@ -16,4 +16,6 @@
     <string name="textViewGenero">Género</string>
     <string name="textViewImagen">Imagen</string>
     <string name="textViewLocalizacion">Localización</string>
+    <string name="textviewusuarios">Usuario</string>
+    <string name="textviewpass">Contrasena</string>
 </resources>

@@ -157,7 +157,7 @@ public class Insertar extends AppCompatActivity
                     {
                         Log.d("STATE", "Usuario " + i + ": " + usuarios.get(i).getName().title + " " +usuarios.get(i).getName().first
                                 + " " +usuarios.get(i).getName().last + " Sexo: " + usuarios.get(i).getGender() + " Fecha: " +usuarios.get(i).getRegister()
-                                + " Nacionalidad: " +usuarios.get(i).getNat() + " Imagen " +usuarios.get(i).getPhone()
+                                + " Nacionalidad: " +usuarios.get(i).getNat() + " Imagen " +usuarios.get(i).getImage()
                                 + " Localizacion " +usuarios.get(i).getLocation().street  + " " +usuarios.get(i).getLocation().city);
                         Log.d("Insertar", "antes de insertar");
                         insertar(usuarios.get(i));

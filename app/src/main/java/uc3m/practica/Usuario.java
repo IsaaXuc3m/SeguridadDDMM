@@ -52,4 +52,6 @@ public class Usuario {
     public LoginDatos getLogin() {
         return login;
     }
+
+    public String getImage(){return  image;};
 }

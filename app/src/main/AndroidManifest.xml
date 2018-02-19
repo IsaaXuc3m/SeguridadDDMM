@@ -18,8 +18,10 @@
         </activity>
         <activity android:name=".Principal" />
         <activity android:name=".Insertar" />
-        <activity android:name=".ListarVertical" />
-        <activity android:name=".ListarHorizontal"></activity>
+        <activity android:name=".ListarVertical"
+            android:configChanges="orientation"/>
+        <activity android:name=".ListarHorizontal"
+            android:configChanges="orientation"></activity>
     </application>
 
 </manifest>
