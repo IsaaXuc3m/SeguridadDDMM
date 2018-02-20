@@ -72,6 +72,8 @@ public class Insertar extends AppCompatActivity
 
         MiTareaAsincrona tarea=new MiTareaAsincrona();
         tarea.execute(parametros);
+        Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     public void insertar(Usuario usuario)
@@ -302,7 +304,11 @@ public class Insertar extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(Boolean result)
+        {
+            Log.d(TAG, "Despues de asynctask");
+            //Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();
+
 
         }
 
