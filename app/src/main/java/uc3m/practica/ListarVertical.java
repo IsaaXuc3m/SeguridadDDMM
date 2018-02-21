@@ -112,6 +112,7 @@ public class ListarVertical extends AppCompatActivity
             Log.d(TAG,"Orientacion2");
             Intent intent = new Intent(this, ListarHorizontal.class);
             startActivity(intent);
+            finish();
         }
     }
 }

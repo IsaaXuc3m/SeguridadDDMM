@@ -100,8 +100,9 @@ public class ListarHorizontal extends AppCompatActivity
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
         {
             Log.d(TAG,"Orientacion2");
-            Intent intent = new Intent(this, ListarHorizontal.class);
+            Intent intent = new Intent(this, ListarVertical.class);
             startActivity(intent);
+            finish();
         }
     }
 }
