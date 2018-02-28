@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/textviewusuarios"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+            />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -49,31 +50,32 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/textviewusuarios"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                />
 
             </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/textViewContrasena"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:text="@string/textviewpass"
-                android:layout_marginTop="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/editTextUsuario"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/editTextUsuario" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/editTextPassword"
+                    android:id="@+id/editTextContrasena"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
+                    android:hint="@string/edittextContrasena"
                     android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeActionLabel=""
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -87,9 +89,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in_short"
+                android:onClick="botonLogin"
+                android:text="@string/botonLogin"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>

@@ -36,7 +36,8 @@ public class Insertar extends AppCompatActivity
     private EditText textoNacionalidad, textoSexo, textoNumero, textoFecha;
     DataBase baseDatos;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertar);
         textoNacionalidad = (EditText) findViewById(R.id.editTextNacionalidad);
@@ -46,7 +47,8 @@ public class Insertar extends AppCompatActivity
         baseDatos = new DataBase(this);
     }
 
-    public void botonInsertar(View view) {
+    public void botonInsertar(View view)
+    {
         Log.d("Insertar","Insertando");
         String nacionalidad = textoNacionalidad.getText().toString();
         Log.d(TAG, "la nacionalidad es:" +nacionalidad);
