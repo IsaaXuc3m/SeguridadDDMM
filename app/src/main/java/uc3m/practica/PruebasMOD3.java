@@ -17,7 +17,28 @@ public class PruebasMOD3 {
         byte [] salt=Crypto.generateSalt();
         byte [] iv=Crypto.generateIv(32);
         key=deriveKey(pass,salt); // con esto se supone que tendremos la clave de cifrado. Hay que seguir desde aqui.
+        // con esta key se supone que se crea la base de datos.
+        //CREAR LA BASE DE DATOS CON LA KEY(?).
+
+
+
+        //cifrar la clave para guardarla:
+        String cifrada=encrypt(key.toString(),pass);
+        //almacenar la clave cifrada como string
+
+
     }
+
+    /*
+    * Pasos:
+    * 1- generar palabra aleatoria y crear base de datos con la palabra. (¿esta palabra es un salt?)
+    * 2- Cifrar la palabra aleatoria con la password y almacenarla en el dispositivo.
+    * ya estaria creado.
+    * para consultas:
+    * 3- obtener del dispositivo la palabra aleatoria cifrada.
+    * 4- descifrar palabra aleatoria con password
+    * 5- acceder a la base de datos con la clave.
+    * */
 
 
 
