@@ -149,24 +149,6 @@ public class Crypto {
 
         return decrypt(cipherBytes, key, iv);
     }
-    SecretKey key;
-    String getRawKey() {
-        if (key == null) {
-            return null;
-        }
-        return Crypto.toHex(key.getEncoded());
-    }
-    public SecretKey deriveKey(String password, byte[] salt) {
-        return Crypto.deriveKeyPbkdf2(salt, password);
-    }
-    public String encrypt(String plaintext, String password) {
-        byte[] salt = Crypto.generateSalt();
-        key = deriveKey(password, salt);
-        Log.d(TAG, "Generated key: " + getRawKey());
-        return Crypto.encrypt(plaintext, key, salt);
-    }
-    public String decrypt(String ciphertext, String password) {
-        return Crypto.decryptPbkdf2(ciphertext, password);
-    }
+
 
 }
