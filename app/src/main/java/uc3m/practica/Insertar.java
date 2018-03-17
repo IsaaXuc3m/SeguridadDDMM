@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +46,8 @@ public class Insertar extends AppCompatActivity
         textoSexo = (EditText) findViewById(R.id.editTextSexo);
         textoNumero = (EditText) findViewById(R.id.editTextNumero);
         textoFecha = (EditText) findViewById(R.id.editTextFechaRegistro);
+        // para sqlcipher
+        SQLiteDatabase.loadLibs(this);
         baseDatos = new DataBase(this);
     }
 
@@ -80,6 +84,8 @@ public class Insertar extends AppCompatActivity
 
     public void insertar(Usuario usuario)
     {
+        // para sqlcipher
+        SQLiteDatabase.loadLibs(this);
         if(baseDatos.insert(usuario))
         {
             //Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();

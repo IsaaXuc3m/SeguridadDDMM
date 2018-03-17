@@ -3,8 +3,9 @@ package uc3m.practica;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import net.sqlcipher.database.*;
+//import android.database.sqlite.SQLiteDatabase;
+//import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
@@ -26,6 +27,7 @@ public class DataBase extends SQLiteOpenHelper
     private static final String COL8 = "pass";
 
     public DataBase(Context context) {
+
         super(context, TABLE_NAME, null, 1);
     }
 
@@ -47,7 +49,7 @@ public class DataBase extends SQLiteOpenHelper
     public boolean insert(Usuario item)
     {
         Log.d(TAG,"1");
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase("pass");
         Log.d(TAG,"2");
         ContentValues contentValues = new ContentValues();
         Log.d(TAG,"3");
@@ -82,7 +84,7 @@ public class DataBase extends SQLiteOpenHelper
 
     public Cursor getData()
     {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase("pass");
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
         return data;
