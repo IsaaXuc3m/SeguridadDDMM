@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 public class ListarHorizontal extends AppCompatActivity
 {
     private static final String TAG = "ListarHorizontal";
@@ -28,6 +30,7 @@ public class ListarHorizontal extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_horizontal);
         tabla = (TableLayout) findViewById(R.id.tabla);
+        SQLiteDatabase.loadLibs(this);
         baseDatos = new DataBase(this);
         rellenarTabla();
     }
@@ -37,7 +40,7 @@ public class ListarHorizontal extends AppCompatActivity
     private void rellenarTabla()
     {
         Log.d(TAG, "Vamos a hacer el select *");
-
+        SQLiteDatabase.loadLibs(this);
         Cursor data = baseDatos.getData();
 
         while(data.moveToNext())

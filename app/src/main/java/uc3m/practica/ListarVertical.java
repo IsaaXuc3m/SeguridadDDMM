@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import java.io.InputStream;
 import java.net.URL;
 
@@ -32,6 +34,7 @@ public class ListarVertical extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_vertical);
         tabla = (TableLayout) findViewById(R.id.tabla);
+        SQLiteDatabase.loadLibs(this);
         baseDatos = new DataBase(this);
         rellenarTabla();
     }
@@ -39,7 +42,7 @@ public class ListarVertical extends AppCompatActivity
     private void rellenarTabla()
     {
         Log.d(TAG, "Vamos a hacer el select *");
-
+        SQLiteDatabase.loadLibs(this);
         Cursor data = baseDatos.getData();
 
         while(data.moveToNext())

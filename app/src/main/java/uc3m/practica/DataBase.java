@@ -49,6 +49,7 @@ public class DataBase extends SQLiteOpenHelper
     public boolean insert(Usuario item)
     {
         Log.d(TAG,"1");
+
         SQLiteDatabase db = this.getWritableDatabase("pass");
         Log.d(TAG,"2");
         ContentValues contentValues = new ContentValues();
