@@ -2,12 +2,14 @@ package uc3m.practica;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import net.sqlcipher.database.*;
 //import android.database.sqlite.SQLiteDatabase;
 //import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import static android.content.Context.MODE_PRIVATE;
 /**
  * Created by Isaac on 17/02/2018.
  */
@@ -46,11 +48,14 @@ public class DataBase extends SQLiteOpenHelper
         db.execSQL(prueba + TABLE_NAME);
     }
 
-    public boolean insert(Usuario item)
+    public boolean insert(Usuario item, Context context)
     {
+        // obtener la pass antes de seguir
+        String pass = getClave(context);
+
         Log.d(TAG,"1");
 
-        SQLiteDatabase db = this.getWritableDatabase("pass");
+        SQLiteDatabase db = this.getWritableDatabase(pass);
         Log.d(TAG,"2");
         ContentValues contentValues = new ContentValues();
         Log.d(TAG,"3");
@@ -83,11 +88,29 @@ public class DataBase extends SQLiteOpenHelper
         }
     }
 
-    public Cursor getData()
+    public Cursor getData(Context context)
     {
-        SQLiteDatabase db = this.getWritableDatabase("pass");
+        // obtener la pass antes de seguir
+        Log.d("crypto2  ","llamo a getclave");
+        String pass = getClave(context);
+
+        SQLiteDatabase db = this.getWritableDatabase(pass);
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
         return data;
+    }
+    public String decrypt(String ciphertext, String password) {
+        return Crypto.decryptPbkdf2(ciphertext, password);
+    }
+    private SharedPreferences sp;
+    public String getClave(Context context){
+
+        sp = context.getSharedPreferences("ArchivoSP",MODE_PRIVATE);
+        String cifrada=sp.getString("claveCifrada","");
+        Log.d("crypto2  ","clave cifrada desde el shared" + cifrada);
+        Log.d("crypto2  ","getclave cifrada " + cifrada);
+        String clave=decrypt(cifrada,sp.getString("Contrasena",""));
+        Log.d("crypto2  ","getclave devuelve " + clave);
+        return clave;
     }
 }

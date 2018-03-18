@@ -1,6 +1,7 @@
 package uc3m.practica;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.crypto.SecretKey;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Insertar extends AppCompatActivity
@@ -37,6 +39,7 @@ public class Insertar extends AppCompatActivity
     private final String TAG = "Insertar";
     private EditText textoNacionalidad, textoSexo, textoNumero, textoFecha;
     DataBase baseDatos;
+    private SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,6 +52,18 @@ public class Insertar extends AppCompatActivity
         // para sqlcipher
         SQLiteDatabase.loadLibs(this);
         baseDatos = new DataBase(this);
+        // Tras crear la base de datos se crea la clave y se almacena para acceder a ella
+        // cuando se haga una insercion o una lectura.
+        Log.d("crypto2  ","CreoClave");
+        sp=getSharedPreferences("ArchivoSP", MODE_PRIVATE);
+        String pass=sp.getString("claveCifrada","");
+        Log.d("crypto2","existe clave? " + pass);
+
+        if (pass.equals("")){
+            Log.d("crypto2","no existe pues creo clave");
+            crearClave();
+        }
+
     }
 
     public void botonInsertar(View view)
@@ -86,7 +101,7 @@ public class Insertar extends AppCompatActivity
     {
         // para sqlcipher
         SQLiteDatabase.loadLibs(this);
-        if(baseDatos.insert(usuario))
+        if(baseDatos.insert(usuario,this))
         {
             //Toast.makeText(this, "Insercion correcta", Toast.LENGTH_SHORT).show();
             Log.d("Insertar", "bien");
@@ -324,5 +339,48 @@ public class Insertar extends AppCompatActivity
         protected void onCancelled() {
 
         }
+    }
+    SecretKey key;
+    public void crearClave (){
+        sp=getSharedPreferences("ArchivoSP", MODE_PRIVATE);
+        String pass=sp.getString("Contrasena","");
+        byte [] salt=Crypto.generateSalt();
+        byte [] iv=Crypto.generateIv(32);
+        key=deriveKey(pass,salt);
+
+        String clave=getRawKey();
+        Log.d("crypto2  ","clave sin cifrar" + clave);
+        // ahora se cifra la clave
+        String cifrada = encrypt(clave,pass);
+        Log.d("crypto2  ","clave cifrada" + cifrada);
+        //ahora que se tiene la clave, se procede a guardar en SP
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putString("claveCifrada",cifrada);
+        editor.commit();
+    }
+
+    String getRawKey() {
+        if (key == null) {
+            return null;
+        }
+        return Crypto.toHex(key.getEncoded());
+    }
+    public SecretKey deriveKey(String password, byte[] salt) {
+        return Crypto.deriveKeyPbkdf2(salt, password);
+    }
+    public String encrypt(String plaintext, String password) {
+        byte[] salt = Crypto.generateSalt();
+        key = deriveKey(password, salt);
+        Log.d("Crypto", "Generated key: " + getRawKey());
+        return Crypto.encrypt(plaintext, key, salt);
+    }
+    public String decrypt(String ciphertext, String password) {
+        return Crypto.decryptPbkdf2(ciphertext, password);
+    }
+    public String getClave(){
+        sp = getSharedPreferences("ArchivoSP",MODE_PRIVATE);
+        String cifrada=sp.getString("claveCifrada","");
+        String clave=decrypt(cifrada,sp.getString("Contrasena",""));
+        return clave;
     }
 }

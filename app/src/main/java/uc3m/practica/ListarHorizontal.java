@@ -41,7 +41,7 @@ public class ListarHorizontal extends AppCompatActivity
     {
         Log.d(TAG, "Vamos a hacer el select *");
         SQLiteDatabase.loadLibs(this);
-        Cursor data = baseDatos.getData();
+        Cursor data = baseDatos.getData(this);
 
         while(data.moveToNext())
         {

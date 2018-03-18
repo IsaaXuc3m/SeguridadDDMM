@@ -42,8 +42,9 @@ public class ListarVertical extends AppCompatActivity
     private void rellenarTabla()
     {
         Log.d(TAG, "Vamos a hacer el select *");
+        Log.d("crypto2  ","llamo a la funcion getdata" );
         SQLiteDatabase.loadLibs(this);
-        Cursor data = baseDatos.getData();
+        Cursor data = baseDatos.getData(this);
 
         while(data.moveToNext())
         {
